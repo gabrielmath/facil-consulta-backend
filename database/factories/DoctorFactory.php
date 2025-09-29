@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class DoctorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id'      => User::factory(),
+            'crm'          => $this->faker->unique()->numberBetween(1000, 9999),
+            'specialty'    => $this->faker->word(),
+            'full_address' => "{$this->faker->streetAddress()}, {$this->faker->numberBetween(1, 1000)}, {$this->faker->city()}",
         ];
     }
 }

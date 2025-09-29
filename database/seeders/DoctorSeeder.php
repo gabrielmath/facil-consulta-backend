@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DoctorSeeder extends Seeder
@@ -12,6 +13,24 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $specialties = [
+            'Cardiologista',
+            'Oftalmologista',
+            'Neurologista',
+            'Otorrinolaringologista',
+            'Dermatologista',
+            'Ortopedista',
+            'Nutricionista',
+            'Psiquiatra',
+        ];
+
+        foreach ($specialties as $specialty) {
+            $user = User::factory()->create();
+            
+            Doctor::factory()->create([
+                'user_id'   => $user->id,
+                'specialty' => $specialty
+            ]);
+        }
     }
 }

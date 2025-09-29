@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class PatientSeeder extends Seeder
@@ -12,6 +12,11 @@ class PatientSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $user = User::factory()->create([
+            'name'  => 'Patient Test',
+            'email' => 'patient@user.com',
+        ]);
+
+        $user->patient()->create();
     }
 }

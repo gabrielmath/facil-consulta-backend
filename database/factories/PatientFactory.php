@@ -17,7 +17,7 @@ class PatientFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => UserFactory::new(),
         ];
     }
 }

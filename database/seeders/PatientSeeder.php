@@ -5,16 +5,18 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class PatientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name'  => 'User Test',
-            'email' => 'user@user.com',
+        $user = User::factory()->create([
+            'name'  => 'Patient Test',
+            'email' => 'patient@user.com',
         ]);
+
+        $user->patient()->create();
     }
 }

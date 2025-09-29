@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\RegistrationController;
 use App\Http\Controllers\Api\V1\HomeController;
@@ -10,6 +11,12 @@ Route::get('/test', [HomeController::class, 'test'])->name('test');
 Route::post('register', RegistrationController::class)->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
+Route::get('doctors', [AppointmentController::class, 'doctors'])->name('doctors');
+
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('appointment', [AppointmentController::class, 'scheduleAnAppointment'])->name('appointment');
+
+
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });

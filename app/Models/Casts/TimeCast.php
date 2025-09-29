@@ -14,7 +14,8 @@ class TimeCast implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes)
     {
-        return Carbon::createFromFormat('H:i:s', $value);
+//        return Carbon::createFromFormat('H:i:s', $value);
+        return $value;
     }
 
     /**

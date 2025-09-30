@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\AppointmentStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ScheduleAnAppointmentRequest;
+use App\Http\Resources\Api\V1\AppointmentResource;
 use App\Http\Resources\Api\V1\DoctorResource;
 use App\Models\Appointment;
 use App\Models\Doctor;
@@ -28,5 +30,29 @@ class AppointmentController extends Controller
         ]);
 
         return response()->json(['appointment' => $appointment, 'schedule' => $appointment->schedule], 200);
+    }
+
+    public function pastAppointments()
+    {
+        $appointments = Auth::user()
+            ->patient
+            ->appointments()
+            ->with(['doctor.user', 'schedule'])
+            ->where('status', AppointmentStatusEnum::FINALIZED)
+            ->get();
+
+        return AppointmentResource::collection($appointments);
+    }
+
+    public function nextAppointments()
+    {
+        $appointments = Auth::user()
+            ->patient
+            ->appointments()
+            ->with(['doctor.user', 'schedule'])
+            ->where('status', AppointmentStatusEnum::SCHEDULED)
+            ->get();
+
+        return AppointmentResource::collection($appointments);
     }
 }

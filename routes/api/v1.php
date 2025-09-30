@@ -16,6 +16,8 @@ Route::get('doctors', [AppointmentController::class, 'doctors'])->name('doctors'
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('appointment', [AppointmentController::class, 'scheduleAnAppointment'])->name('appointment');
+    Route::get('past-appointments', [AppointmentController::class, 'pastAppointments'])->name('past-appointment');
+    Route::get('next-appointments', [AppointmentController::class, 'nextAppointments'])->name('next-appointment');
 
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');

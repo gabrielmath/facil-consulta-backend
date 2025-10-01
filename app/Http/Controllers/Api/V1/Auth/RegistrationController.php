@@ -20,6 +20,11 @@ class RegistrationController extends Controller
 
         $user->patient()->create();
 
-        return response()->json(['message' => 'User created successfully!'], Response::HTTP_CREATED);
+        return response()->json([
+            'status'  => true,
+            'message' => 'User logged in successfully',
+            'token'   => $user->createToken('API REST TOKEN')->plainTextToken,
+            'user'    => $user
+        ], Response::HTTP_OK);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,13 @@ class Doctor extends Model
         'specialty',
         'full_address'
     ];
+
+    public function scopeSchedulesAvailables(Builder $query): Builder
+    {
+        return $query->whereHas('schedules', function ($query) {
+            $query->where('available', true);
+        });
+    }
 
     public function user(): BelongsTo
     {

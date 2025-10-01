@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('doctor_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')->constrained('doctors')->cascadeOnDelete();
-            $table->date('date');
-            $table->time('time');
+            $table->date('date')->index();
+            $table->time('time')->index();
             $table->boolean('available')->default(true);
             $table->timestamps();
 

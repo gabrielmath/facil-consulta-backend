@@ -24,16 +24,16 @@ class DoctorResource extends JsonResource
             'full_address' => $this->full_address,
             'schedules'    => $this->schedules
                 ->where('available', true)
-                ->where('date', '>', Carbon::now()->addDay()->toDateString())
-                ->groupBy(fn($schedule) => $schedule->date->toDateString())
-                ->map(function ($items) {
-                    return $items->sortBy('time')->map(function ($schedule) {
-                        return [
-                            'id'   => $schedule->id,
-                            'time' => Carbon::createFromFormat('H:i:s', $schedule->time)->format('H:i'),
-                        ];
-                    })->values();
-                }),
+                ->where('date', '>=', Carbon::tomorrow()->toDateString())
+                ->groupBy(fn($s) => $s->date->toDateString())
+                ->map(fn($items) => $items
+                    ->sortBy('time')
+                    ->map(fn($s) => [
+                        'id'   => $s->id,
+                        'time' => Carbon::createFromFormat('H:i:s', $s->time)->format('H:i'),
+                    ])
+                    ->values()
+                ),
         ];
     }
 }

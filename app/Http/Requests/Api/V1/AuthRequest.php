@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Rules\ValidEmailDomain;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AuthRequest extends FormRequest
@@ -22,7 +23,7 @@ class AuthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'    => ['required', 'email'],
+            'email'    => ['required', 'email', new ValidEmailDomain()],
             'password' => ['required', 'min:4', 'string'],
         ];
     }

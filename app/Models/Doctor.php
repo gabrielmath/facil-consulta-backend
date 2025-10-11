@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,8 +23,9 @@ class Doctor extends Model
 
     public function scopeSchedulesAvailables(Builder $query): Builder
     {
-        return $query->whereHas('schedules', function ($query) {
-            $query->where('available', true);
+        return $query->whereHas('schedules', function ($q) {
+            $q->where('available', true)
+                ->where('date', '>=', Carbon::tomorrow()->toDateString());
         });
     }
 

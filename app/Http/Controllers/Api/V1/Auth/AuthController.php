@@ -16,9 +16,10 @@ class AuthController extends Controller
     {
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return response()->json([
-                'status'  => false,
-                'message' => 'Email & Password does not match with our record.',
-            ], Response::HTTP_UNAUTHORIZED);
+                'status'    => false,
+                'message'   => 'Email ou senha incorretos, verifique e tente novamente.',
+                'typeError' => 'NoMatch',
+            ], Response::HTTP_FORBIDDEN);
         }
 
         $user = User::whereEmail($request->validated('email'))->first();

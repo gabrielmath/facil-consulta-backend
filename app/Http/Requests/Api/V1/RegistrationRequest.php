@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1;
 
 use App\Rules\FullNameRule;
+use App\Rules\ValidEmailDomain;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegistrationRequest extends FormRequest
@@ -24,7 +25,7 @@ class RegistrationRequest extends FormRequest
     {
         return [
             'name'     => ['required', 'string', new FullNameRule()],
-            'email'    => ['required', 'email', 'unique:users,email'],
+            'email'    => ['required', 'email', 'unique:users,email', new ValidEmailDomain()],
             'password' => ['required', 'string', 'min:4'],
         ];
     }

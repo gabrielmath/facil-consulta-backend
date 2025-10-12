@@ -24,13 +24,21 @@ class DoctorSeeder extends Seeder
             'Psiquiatra',
         ];
 
+        shuffle($specialties);
+
+        $i = 0;
         foreach ($specialties as $specialty) {
             $user = User::factory()->create();
-            
+
             Doctor::factory()->create([
                 'user_id'   => $user->id,
                 'specialty' => $specialty
             ]);
+
+            $i++;
+            if ($i > 2) {
+                break;
+            }
         }
     }
 }

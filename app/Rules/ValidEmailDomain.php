@@ -51,13 +51,5 @@ class ValidEmailDomain implements ValidationRule
             $fail('Este e-mail não existe ou está incompleto, verifique e tente novamente.');
             return;
         }
-
-        // Se o domínio for muito parecido com um conhecido (fuzzy match leve)
-        foreach ($this->commonDomains as $validDomain) {
-            if (levenshtein($domain, $validDomain) <= 2) {
-                $fail('Este e-mail não existe ou está incompleto, verifique e tente novamente.');
-                return;
-            }
-        }
     }
 }

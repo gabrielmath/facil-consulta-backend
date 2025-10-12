@@ -16,34 +16,45 @@ class DoctorScheduleSeeder extends Seeder
     {
         $doctors = Doctor::all();
 
+        // Horários possíveis (sem o intervalo de almoço)
+        $possibleTimes = [];
+
+        // Manhã: 08:00 até 11:30
+        foreach (range(8, 11) as $hour) {
+            foreach ([0, 30] as $minute) {
+                $possibleTimes[] = sprintf('%02d:%02d:00', $hour, $minute);
+            }
+        }
+
+        // Tarde: 13:00 até 17:30
+        foreach (range(13, 17) as $hour) {
+            foreach ([0, 30] as $minute) {
+                $possibleTimes[] = sprintf('%02d:%02d:00', $hour, $minute);
+            }
+        }
+
         foreach ($doctors as $doctor) {
             for ($day = 0; $day < 14; $day++) {
                 $date = Carbon::today()->addDays($day);
 
+                // pula fins de semana
                 if ($date->isWeekend()) {
                     continue;
                 }
 
-                foreach (range(8, 11) as $hour) {
-                    foreach ([0, 30] as $minute) {
-                        DoctorSchedule::factory()->create([
-                            'doctor_id' => $doctor->id,
-                            'date'      => $date->toDateString(),
-                            'time'      => sprintf('%02d:%02d:00', $hour, $minute),
-                            'available' => true,
-                        ]);
-                    }
-                }
+                // escolhe de 0 a 4 horários aleatórios para o dia
+                $timesForDay = collect($possibleTimes)
+                    ->shuffle()
+                    ->take(rand(0, 4));
 
-                foreach (range(13, 17) as $hour) {
-                    foreach ([0, 30] as $minute) {
-                        DoctorSchedule::factory()->create([
-                            'doctor_id' => $doctor->id,
-                            'date'      => $date->toDateString(),
-                            'time'      => sprintf('%02d:%02d:00', $hour, $minute),
-                            'available' => true,
-                        ]);
-                    }
+                // cria os horários
+                foreach ($timesForDay as $time) {
+                    DoctorSchedule::factory()->create([
+                        'doctor_id' => $doctor->id,
+                        'date'      => $date->toDateString(),
+                        'time'      => $time,
+                        'available' => true,
+                    ]);
                 }
             }
         }
